@@ -1,0 +1,8 @@
+textarea {
+  position: fixed;
+   width: 100%;
+    bottom: 0;
+   right: 0;
+   left: 0;
+   top: 30;
+}

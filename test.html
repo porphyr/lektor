@@ -1,0 +1,50 @@
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Tests fuer Lektor</title>
+<script src="lektor.js"></script>
+<body>
+<div id="playground"></div>
+<script>
+   var playground = document.getElementById("playground");
+   
+  showError = function(pos, msg) {
+   throw msg + "@" + pos;
+  };
+   
+   var testCases = [
+     ["Lorem \"ipsum\" dolor.", "Lorem „ipsum“ dolor."],
+     ["Lorem \"ipsum \"dolor\" sit\" amet, consetetur sadipscing elitr,", "Lorem „ipsum »dolor« sit“ amet, consetetur sadipscing elitr,"],
+     ["Lorem \"ipsum \"dolor \"sit amet, consetetur sadipscing elitr,", "Zu viele öffnende Anführungszeichen@20"],
+     ];
+   
+   var html = "<table border><tr><th>#</th><th>Eingabe</th><th>Ausgabe</th><th>Erwartet</th></tr>\n";
+   for (var i = 0; i < testCases.length; ++i) {
+     html += "<tr id=\"row"+i+"\"><td>"+i+"</td><td>" + testCases[i][0] + "</td><td><textarea id=\"text"+i+"\">"+ testCases[i][0] + "</textarea></td><td>" +  testCases[i][1] + "</td></tr>\n";
+   }
+   html += "</table>";
+   playground.innerHTML = html;
+   
+   for (var i = 0; i < testCases.length; ++i) {
+     console.log("Test "+i+"...");
+     var textarea = document.getElementById("text"+i);
+     var result;
+     try {
+       doit();
+       result = textarea.value;
+     } catch (ex) {
+       result = ex;
+     }
+	 row = document.getElementById("row"+i);
+     if (result == testCases[i][1]) {
+       console.log("...passed!");
+       row.style.backgroundColor = "green";
+     } else {
+       console.log("...failed! (result is [" + result + "])");
+       row.style.backgroundColor = "red";
+	 }
+   }
+
+</script>
+
+</body>

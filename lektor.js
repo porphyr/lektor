@@ -87,11 +87,10 @@ scanElement2 = function(i) {
 }
 
 var scanner = scanNormal;
-var textarea;
+var textarea = document.getElementById("text");
 
 doit = function() {
   level=0;
-  textarea = document.getElementById("text");
 
   for (var i = 0; i < textarea.value.length; ++i) {
     scanner(i);

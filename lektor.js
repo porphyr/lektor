@@ -47,7 +47,7 @@ scanNormal = function(i) {
   if ("\"'„“»«”‚‘".includes(c)) {
     console.log("Found quote at pos "+ i);
     count++;
-    if ("( >\n//".includes(textarea.value[i-1])) {
+    if (!i || "( >\n//".includes(textarea.value[i-1])) {
       processStartQuote(i);
     } else {
       processEndQuote(i);

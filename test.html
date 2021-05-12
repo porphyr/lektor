@@ -11,6 +11,11 @@
   showError = function(pos, msg) {
    throw msg + "@" + pos;
   };
+  
+  function translate(string) {
+    return string.replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+  }
    
    var testCases = [
      ["Lorem \"ipsum\" dolor.", "Lorem „ipsum“ dolor."],
@@ -18,11 +23,16 @@
      ["Lorem \"ipsum \"dolor \"sit amet, consetetur sadipscing elitr,", "Zu viele öffnende Anführungszeichen@20"],
      ["Lorem \"ipsum\" dolor\" sit amet, consetetur sadipscing elitr,", "Zu viele schließende Anführungszeichen@19"],
      ["\"Lorem ipsum dolor.\"", "„Lorem ipsum dolor.“"],
+	 ["\"Lorem 100% ipsum dolor.\"", "„Lorem 100 % ipsum dolor.“"],
+	 ["\"Lorem 100€ ipsum dolor.\"", "„Lorem 100 € ipsum dolor.“"],
+	 ["\"Lorem §1 ipsum dolor.\"", "„Lorem § 1 ipsum dolor.“"],
+	 ["<quote>\"Lorem ipsum dolor.\"</quote>", "<quote>„Lorem ipsum dolor.“</quote>"],
+	 ["Lorem \"<b>ipsum</b>\" dolor.", "Lorem „<b>ipsum</b>“ dolor."],
      ];
    
    var html = "<table border><tr><th>#</th><th>Eingabe</th><th>Ausgabe</th><th>Erwartet</th></tr>\n";
    for (var i = 0; i < testCases.length; ++i) {
-     html += "<tr id=\"row"+i+"\"><td>"+i+"</td><td>" + testCases[i][0] + "</td><td><textarea id=\"text"+i+"\">"+ testCases[i][0] + "</textarea></td><td>" +  testCases[i][1] + "</td></tr>\n";
+     html += "<tr id=\"row"+i+"\"><td>"+i+"</td><td>" + translate(testCases[i][0]) + "</td><td><textarea id=\"text"+i+"\">"+ testCases[i][0] + "</textarea></td><td>" +  translate(testCases[i][1]) + "</td></tr>\n";
    }
    html += "</table>";
    playground.innerHTML = html;
@@ -42,7 +52,7 @@
        console.log("...passed!");
        row.style.backgroundColor = "green";
      } else {
-       console.log("...failed! (result is [" + result + "])");
+       console.log("...failed! (result is [" + result + "], expected was ["+testCases[i][1]+"])");
        row.style.backgroundColor = "red";
 	 }
    }

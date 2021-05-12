@@ -42,12 +42,13 @@ processEndQuote = function(i) {
   level--;
 }
 
+var lastChar=null;
 scanNormal = function(i) {
   var c = textarea.value[i];
   if ("\"'„“»«”‚‘".includes(c)) {
     console.log("Found quote at pos "+ i);
     count++;
-    if (!i || "( >\n//".includes(textarea.value[i-1])) {
+    if (lastChar == null || "( \n//".includes(lastChar)) {
       processStartQuote(i);
     } else {
       processEndQuote(i);
@@ -70,6 +71,7 @@ scanNormal = function(i) {
     scanner = scanElement2;
     return;
   }
+  lastChar = c;
 };
 
 scanElement = function(i) {
@@ -91,6 +93,7 @@ var textarea = document.getElementById("text");
 
 doit = function() {
   level=0;
+  lastChar = null;
 
   for (var i = 0; i < textarea.value.length; ++i) {
     scanner(i);

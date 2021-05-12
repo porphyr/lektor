@@ -8,6 +8,7 @@ String.prototype.replaceAt = function(index, replacement) {
 
 var count = 0;
 var level = 0;
+var starts = [];
 
 showError = function(pos, msg) {
    textarea.focus();
@@ -21,6 +22,7 @@ showError = function(pos, msg) {
 };
 
 processStartQuote = function(i) {
+  starts[level] = i;
   if (level == 0) {
     textarea.value = textarea.value.replaceAt(i, "„");
   } else if (level == 1) {
@@ -89,15 +91,21 @@ scanElement2 = function(i) {
 }
 
 var scanner = scanNormal;
-var textarea = document.getElementById("text");
+var textarea
 
 doit = function() {
+  if(!textarea) textarea = document.getElementById("text");
   level=0;
   lastChar = null;
 
   for (var i = 0; i < textarea.value.length; ++i) {
     scanner(i);
   }
+  
+  if (level) {
+	showError(starts[level-1], "Fehlendes schließendes Anführungszeichen");
+  }
+  
   console.log(count);
   textarea.focus();
   textarea.setSelectionRange(0,textarea.value.length);

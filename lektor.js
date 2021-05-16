@@ -97,6 +97,12 @@ doit = function() {
   if(!textarea) textarea = document.getElementById("text");
   level=0;
   lastChar = null;
+  
+  // replace all redundant whitespaces
+  textarea.value = textarea.value.replaceAll(/  /ig, " ");
+  
+  textarea.value = 	textarea.value.replaceAll(/\( *(<a href=\"[^>]*\">) *([^ ].*[^ ]) *<\/a> *\)/g, "($1$2</a>)");
+  textarea.value = 	textarea.value.replaceAll(/ *(<a href=\"[^>]*\">) *\(* ([^ ].*[^ ]) *\) *<\/a> */g, " ($1$2</a>) ");
 
   for (var i = 0; i < textarea.value.length; ++i) {
     scanner(i);

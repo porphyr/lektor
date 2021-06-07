@@ -47,6 +47,11 @@ processEndQuote = function(i) {
 var lastChar=null;
 scanNormal = function(i) {
   var c = textarea.value[i];
+  if (c == "'" && lastChar != null && lastChar.match(/[a-z]/i) && textarea.value[i+1].match(/[a-z]/i) ) {
+	  lastChar = c;
+	  return;
+  }
+
   if ("\"'„“»«”‚‘".includes(c)) {
     console.log("Found quote at pos "+ i);
     count++;
